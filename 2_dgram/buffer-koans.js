@@ -53,7 +53,7 @@ RTPProtocol.prototype.pack = function(payload){
     KOAN #1
     should write Version, Padding, Extension and Count
 */
-		RTPPacket.___(128, 0);
+		RTPPacket.writeUInt8(128, 0);
 		
 		// Marker = 0:                        0
 		// RFC 1890: RTP Profile for Audio and Video Conferences with Minimal Control
@@ -66,21 +66,21 @@ RTPProtocol.prototype.pack = function(payload){
     KOAN #2
     should write Sequence Number
 */
-		RTPPacket.___(this.seqNum, 2);
+		RTPPacket.writeUInt16BE(this.seqNum, 2);
 		
 		// Timestamp
 /*
     KOAN #3
     should write Timestamp...
 */
-		RTPPacket.___(this.timestamp, 4);
+		RTPPacket.writeUInt32BE(this.timestamp, 4);
 		
 		// SSRC
 /*
     KOAN #3
     ...SSRC and...
 */
-		RTPPacket.___(this.ssrc, 8);
+		RTPPacket.writeUInt32BE(this.ssrc, 8);
 		
 		// RFC 2250: RTP Payload Format for MPEG1/MPEG2 Video
 		// 3.5 MPEG Audio-specific header
@@ -88,7 +88,7 @@ RTPProtocol.prototype.pack = function(payload){
     KOAN #3
     ...payload Format
 */
-		RTPPacket.___(0, 12);
+		RTPPacket.writeUInt32BE(0, 12);
 
 		payload.copy(RTPPacket, 16);
 		

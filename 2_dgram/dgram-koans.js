@@ -20,16 +20,22 @@ var Sender = function(options){
     KOAN #1
     should create udp sockets properly
 */
-    this.txSocket = dgram.___('udp4');
-    this.rxSocket = dgram.___('udp4');
+    this.txSocket = dgram.createSocket('udp4');
+    this.rxSocket = dgram.createSocket('udp4');
 };
 
 Sender.prototype.start = function(){
 /*
     KOAN #2
     should make udp server listening sucessfully
-*/
-    this.rxSocket.___(5001);
+
+*/  
+    // this.rxSocket.on("listening", function () {
+    //   var address = this.rxSocket.address();
+    //   console.log("server listening " +
+    //       address.address + ":" + address.port);
+    // });
+    this.rxSocket.bind(5001);
 };
 
 Sender.prototype.broadcast = function(packet){
@@ -55,13 +61,13 @@ Sender.prototype.enableStats = function(enable){
     KOAN #4
     should attend incoming packets from clients
 */
-        this.rxSocket.on(___, function(msg, rinfo){
+        this.rxSocket.on("message", function(msg, rinfo){
             var stats = new Buffer(JSON.stringify(self.stats));
 /*
     KOAN #5
     should response to clients with stats messages
 */
-            dgram.createSocket('udp4').send(stats, 0, stats.length, 5002, rinfo.___);
+            dgram.createSocket('udp4').send(stats, 0, stats.length, 5002, rinfo.broadcastAddress);
         })
     }else{
         this.rxSocket.removeAllListeners();
